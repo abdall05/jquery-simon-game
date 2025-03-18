@@ -1,7 +1,3 @@
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 var colors = ["red","green","yellow","blue"];
 
 function getRandomColor(){
@@ -27,19 +23,19 @@ function checkAnswer(userClickedPattern, gamePattern){
     return true;
 }   
 
-function animateComputerChoice(color){2
-    $("."+color).css("background-color","white");
+function animateComputerChoice(color){
+    $("button."+color).css("background-color","white");
     setTimeout(function(){
-        $("."+color).css("background-color",color);
+        $("button."+color).css("background-color",color);
         playSound(color);
     }, 200);
 }
 
 function animateUserChoice(color){
-    $("."+color).animate({opacity: 0.5}, 100);
+    $("button."+color).animate({opacity: 0.5}, 100);
     playSound(color);
     setTimeout(function(){
-        $("."+color).animate({opacity: 1}, 200);
+        $("button."+color).animate({opacity: 1}, 200);
     }, 100);
 
 }
@@ -47,6 +43,21 @@ function gameOverText(){
     $("h1").text("Game Over, Press Any Key to Restart");
 }
 
+function gameOver(){
+    var backgroundColor = $("body").css("background-color");
+    $("body").css("background-color","red");
+    setTimeout(function(){
+        $("body").css("background-color",backgroundColor);
+    }, 200);
+    playWrongAnswerSound();
+    gameOverText();
+    gamePattern = [];
+    userClickedPattern = [];
+    level = 1 ;
+    startGame = false;
+
+
+}
 function updateLevelText(level){
     $("h1").text("Level "+level);
 }
@@ -95,12 +106,7 @@ $("button").click(function(){
         gamePattern.push(computerRandomColor);
     }
     else{
-        playWrongAnswerSound();
-        gameOverText();
-        gamePattern = [];
-        userClickedPattern = [];2
-        level = 1 ;
-        startGame = false;
+        gameOver(); 
     }
         
 });
